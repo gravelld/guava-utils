@@ -44,14 +44,14 @@ public class ParallelUtils {
 		return doFilterStuf(source, predicate, factor, executorService, true);
 	}
 
-	private static <T, U> Iterable<U> doTransformStuf(final Iterable<T> source, final Function<T, U> transform, int factor, final ExecutorService executorService, final boolean shutdownInTheEnd) {
+	private static <T, U> Iterable<U> doTransformStuf(final Iterable<T> source, final Function<T, U> transform, final int factor, final ExecutorService executorService, final boolean shutdownInTheEnd) {
 		Preconditions.checkArgument(factor > 0, "You should really be using strictly positive factors when doing parallel computing");
-
-		final LinkedBlockingQueue<FutureTask<U>> queue = new LinkedBlockingQueue<FutureTask<U>>(factor);
-		final Iterator<T> sourceIterator = source.iterator();
 
 		return new Iterable<U>() {
 			public Iterator<U> iterator() {
+				final LinkedBlockingQueue<FutureTask<U>> queue = new LinkedBlockingQueue<FutureTask<U>>(factor);
+				final Iterator<T> sourceIterator = source.iterator();
+
 				return new AbstractIterator<U>() {
 					@Override
 					protected U computeNext() {
